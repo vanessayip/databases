@@ -10,6 +10,10 @@ router.get('/users', controller.users.get);
 
 router.post('/users', controller.users.post);
 
+// router.get('/classes', function(req, res) {
+//   // res.send('/../client/styles/index.html');
+// });
+
 
 module.exports = router;
 
