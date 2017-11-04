@@ -30,13 +30,9 @@ CREATE TABLE messages (
 
 -- INSERT INTO users (name) values ("name");
 -- INSERT INTO rooms (name) values ("roomname");
--- INSERT INTO messages (user_id, msg, room_id) values ((SELECT id from users where name = "name"),
--- "msg",
--- (SELECT id from rooms where name = "roomname"));
+-- INSERT INTO messages (user_id, msg, room_id) values ((SELECT id from users where name = "bob"), "hello", (SELECT id from rooms where name = "lobby"));
 
--- UPDATE messages
---   SET msg = "hello"
---   WHERE id != 1;
+-- UPDATE messages SET user_id = "1" WHERE id != 1;
 
 /*  Execute this file from the command line by typing:
  *    mysql -u root < server/schema.sql

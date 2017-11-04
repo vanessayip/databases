@@ -6,7 +6,7 @@ module.exports = {
   messages: {
     get: function (roomName) {
       return new Promise(function (resolve, reject) {
-        db.dbConnection.query('SELECT users.name, messages.msg FROM users JOIN messages ON users.id = messages.user_id JOIN rooms ON messages.room_id = rooms.id WHERE rooms.name = ? ORDER BY messages.createdAt DESC', [roomName], function (err, results, fields) {
+        db.dbConnection.query('SELECT users.name as username, messages.msg as text, rooms.name as roomname FROM users JOIN messages ON users.id = messages.user_id JOIN rooms ON messages.room_id = rooms.id WHERE rooms.name = ? ORDER BY messages.createdAt DESC', [roomName], function (err, results, fields) {
           if (err) {
             console.log('error from messages get query');
             reject(err);
