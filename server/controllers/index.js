@@ -3,7 +3,7 @@ var db = require('../db');
 var promise = require('bluebird');
 var url = require('url');
 var express = require('express');
-
+var parser = require('body-parser');
 
 module.exports = {
   messages: {
@@ -18,13 +18,27 @@ module.exports = {
 
     //open connection to db on req, close connection on res
     post: function (req, res) {
+      console.log('req.body: ', req.body);
       
+      models.messages.post(req.body.username, req.body.text, req.body.roomname).then(function(results) {
+        console.log('results: ', results);
+        res.send();
+      });
     } // a function which handles posting a message to the database
   },
 
   users: {
     get: function (req, res) {},
-    post: function (req, res) {}
+    post: function (req, res) {
+      console.log('req.url: ', req.url);
+      console.log('req.body: ', req.body);
+      console.log('reqbodyusername', req.body.username);
+      console.log('typeof', typeof req.body.username);
+      models.users.post(req.body.username).then(function(results) {
+        console.log('results: ', results);
+        res.send('hi');
+      });
+    }
   },
 
   rooms: {
@@ -49,5 +63,5 @@ module.exports.headers = {
   'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
   'access-control-allow-headers': 'content-type, accept',
   'access-control-max-age': 10, // Seconds.
-  'Content-Type': 'text/json'
+  'Content-Type': 'application/json'
 };

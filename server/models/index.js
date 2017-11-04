@@ -47,7 +47,7 @@ module.exports = {
     },
     post: function (userName) {
       return new Promise(function (resolve, reject) {
-        db.dbConnection.query('INSERT INTO users (name) values ?', [userName], function (err, results, fields) {
+        db.dbConnection.query('INSERT INTO users (name) values (?)', [userName], function (err, results, fields) {
           if (err) {
             console.log('error from users post insert');
             reject(err);

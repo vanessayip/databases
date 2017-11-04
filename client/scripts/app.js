@@ -3,7 +3,7 @@ var app = {
 
   //TODO: The current 'handleUsernameClick' function just toggles the class 'friend'
   //to all messages sent by the user
-  server: 'http://127.0.0.1:3000/classes/messages',
+  server: 'http://127.0.0.1:3000/classes',
   username: 'anonymous',
   roomname: 'lobby',
   lastMessageId: 0,
@@ -28,22 +28,42 @@ var app = {
     // Fetch previous messages
     // app.startSpinner();
     app.fetch();
-
+    app.sendUsername({username: app.username});
+    // app.sendUsername(app.username);
     // Poll for new messages
     // setInterval(function() {
     //   app.fetch(true);
     // }, 3000);
   },
+  
+  sendUsername: function (username) {
+    console.log('inside send username of client', username);
+    // POST the username to the server
+    $.ajax({
+      url: app.server + '/users',
+      type: 'POST',
+      data: JSON.stringify(username),
+      contentType: 'application/json',
+      success: function (data) {
+        console.log('inside send of client success for username', data);
+      },
+      error: function (error) {
+        console.error('chatterbox: Failed to send username', error);
+      }
+    });
+  },
 
   send: function(message) {
     // app.startSpinner();
-
+    console.log('inside send of client', message);
     // POST the message to the server
     $.ajax({
-      url: app.server,
+      url: app.server + '/messages',
       type: 'POST',
-      data: message,
+      data: JSON.stringify(message),
+      contentType: 'application/json',
       success: function (data) {
+        console.log('inside send of client success', data);
         // Clear messages input
         app.$message.val('');
 
@@ -59,7 +79,7 @@ var app = {
   fetch: function(animate) {
     console.log('fetching data...');
     $.ajax({
-      url: app.server,
+      url: app.server + '/messages',
       type: 'GET',
       data: { roomname: this.roomname },
       contentType: 'application/json',
@@ -75,16 +95,16 @@ var app = {
         var mostRecentMessage = data[data.length - 1];
 
         // Only bother updating the DOM if we have a new message
-        if (mostRecentMessage.objectId !== app.lastMessageId) {
+        // if (mostRecentMessage.objectId !== app.lastMessageId) {
           // Update the UI with the fetched rooms
-          app.renderRoomList(data);
+        app.renderRoomList(data);
 
           // Update the UI with the fetched messages
-          app.renderMessages(data, animate);
+        app.renderMessages(data, animate);
 
           // Store the ID of the most recent message
-          app.lastMessageId = mostRecentMessage.objectId;
-        }
+          // app.lastMessageId = mostRecentMessage.objectId;
+        // }
       },
       error: function(error) {
         console.error('chatterbox: Failed to fetch messages', error);
